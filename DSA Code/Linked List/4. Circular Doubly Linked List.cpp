@@ -1,52 +1,42 @@
 #include<iostream>
 using namespace std;
 
-class Student // Student class
-{
+class Student {
     public:
     string rollno;
     string name;
-    Student *next = NULL, *prev = NULL;
-    Student(string rollno, string name) // constructor
-    {
+    Student *next = nullptr, *prev = nullptr;
+    Student(string rollno, string name) {
         this-> rollno = rollno;
         this->name = name;
     }
 };
 
-class List // List class
-{
-    Student *head = NULL;
+class List {
+    Student *head = nullptr;
     public:
-    List(string rollno, string name) // constructor
-    {
+    List(string rollno, string name) {
         head = new Student(rollno,name);
         head->next = head;
         head->prev = head;
     }
 
-    bool is_empty() // function
-    {
-        if( head == NULL )
-        {
+    bool isEmpty() {
+        if( head == nullptr ) {
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
 
-    void insert_at_start(string rollno, string name) // function
-    {
-        if(head == NULL)
-        {
+    void insertAtStart(string rollno, string name) {
+        if(head == nullptr) {
             head = new Student(rollno,name);
             head->next = head;
             head->prev = head;
         }
-        else
-        {
+        else {
             Student *temp = new Student(rollno,name);
             temp->next = head;
             temp->prev = head->prev;
@@ -56,16 +46,13 @@ class List // List class
         }
     }
 
-    void insert_at_last(string rollno, string name) // function
-    {
-        if(head == NULL)
-        {
+    void insertAtLast(string rollno, string name) {
+        if(head == nullptr) {
             head = new Student(rollno,name);
             head->next = head;
             head->prev = head;
         } 
-        else
-        {
+        else {
             Student *temp = new Student(rollno,name);
             temp->next = head;
             temp->prev = head->prev;
@@ -74,18 +61,14 @@ class List // List class
         }
     }
 
-    void show_list() // function
-    {
-        if(head == NULL)
-        {
+    void showList() {
+        if(head == nullptr) {
             cout<<"List is Empty!" <<endl;
         }
-        else
-        {
+        else {
             Student *temp = head;
             cout<<"Roll Number    |   Name" <<endl;
-            while(temp->next != head)
-            {
+            while(temp->next != head) {
                 cout<<temp->rollno <<"   |   " <<temp->name <<endl;
                 temp = temp->next;
             }
@@ -94,53 +77,45 @@ class List // List class
         cout<<"---------------------------------------------" <<endl;
     }
 
-    Student* search_student(string rollno) // function
-    {
-        if(head != NULL)
-        {
+    Student* searchStudent(string rollno) {
+        if(head != nullptr) {
             Student *temp = head;
-            while(temp->next != head)
-            {
-                if(temp->rollno == rollno)
-                {
+            while(temp->next != head) {
+                if(temp->rollno == rollno) {
                     return temp;
                 }
                 temp = temp->next;
             }
-            if(temp->rollno == rollno)
-            {
+            if(temp->rollno == rollno) {
                 return temp;
             }
         }
-        return NULL;
+        return nullptr;
     }
 
-    void insert_after(Student *n, string rollno, string name) // function
-    {
-        if(n == NULL)
-        {
+    void insertAfter(Student *n, string rollno, string name) {
+        if(n == nullptr) {
             cout<<"Student doesn't Exist!" <<endl;
         }
-        else
-        {
-            if((n->next == head) && (n->prev == head)) // only one student
-            {
+        else {
+            // only one student
+            if((n->next == head) && (n->prev == head)) {
                 Student *temp = new Student(rollno,name);
                 temp->next = head;
                 temp->prev = n;
                 n->next = temp;
                 n->prev = temp;
             }
-            else if((n->next == head) && ( n->prev != head)) // more than one Students exist and last node
-            {
+            // more than one Students exist and last node
+            else if((n->next == head) && ( n->prev != head)) {
                 Student *temp = new Student(rollno,name);
                 temp->next = head;
                 temp->prev = n;
                 n->next = temp;
                 head->prev = temp;
             }
-            else // middle nodes
-            {
+            // middle nodes
+            else {
                 Student *temp = new Student(rollno,name);
                 temp->next = n->next;
                 temp->prev = n;
@@ -150,17 +125,13 @@ class List // List class
         }
     }
 
-    void delete_first() // function
-    {
-        if(head != NULL)
-        {
-            if(head->next == head)
-            {
+    void deleteFirst() {
+        if(head != nullptr) {
+            if(head->next == head) {
                 delete head;
-                head = NULL;
+                head = nullptr;
             }
-            else
-            {
+            else {
                 Student *temp = head;
                 head->prev->next = head->next;
                 head->next->prev = head->prev;
@@ -170,17 +141,13 @@ class List // List class
         }
     }
 
-    void delete_last() // function
-    {
-        if(head != NULL)
-        {
-            if(head->next == head)
-            {
+    void deleteLast() {
+        if(head != nullptr) {
+            if(head->next == head) {
                 delete head;
-                head = NULL;
+                head = nullptr;
             }
-            else
-            {
+            else {
                 Student *temp = head->prev;
                 head->prev->prev->next = head;
                 head->prev = head->prev->prev;
@@ -189,30 +156,28 @@ class List // List class
         }
     }
 
-    void delete_student(Student *s) // function
-    {
-        if(s != NULL)
-        {
-            if((s->next == head) && (s->prev == head)) // case for only one student
-            {
+    void deleteStudent(Student *s) {
+        if(s != nullptr) {
+            // case for only one student
+            if((s->next == head) && (s->prev == head)) {
                 delete head;
-                head == NULL;
+                head = nullptr;
             }
-            else if((s == head) && (s->next != head)) // case for 1st student but more than one student exists
-            {
+            // case for 1st student but more than one student exists
+            else if((s == head) && (s->next != head)) {
                 s->prev->next = s->next;
                 s->next->prev = s->prev;
                 head = s->next;
                 delete s;
             }
-            else if((s->next == head) && (s->prev != head)) // case for last node
-            {
+            // case for last node
+            else if((s->next == head) && (s->prev != head)) {
                 s->prev->next = head;
                 s->next->prev = s->prev;
                 delete s;
             }
-            else // case for middle nodes
-            {
+            // case for middle nodes
+            else {
                 s->next->prev = s->prev;
                 s->prev->next = s->next;
                 delete s;
@@ -220,13 +185,10 @@ class List // List class
         }
     }
 
-    void clear_list() // function
-    {
-        if(head != NULL)
-        {
+    void clearList() {
+        if(head != nullptr) {
             Student *temp = head;
-            while(temp->next != temp)
-            {
+            while(temp->next != temp) {
                 head->next->prev = head->prev;
                 head->prev->next = head->next;
                 head = head->next;
@@ -234,44 +196,42 @@ class List // List class
                 temp = head;
             }
             delete temp;
-            head = NULL;
+            head = nullptr;
         }
     }
 
-    ~List() // destructor
-    {
-        clear_list();
+    ~List() {
+        clearList();
     }
 };
 
-int main () // main function
-{
+int main () {
     List l1("23014198-002","Asjad Hafeez");
-    l1.show_list();
+    l1.showList();
 
-    l1.insert_at_start("23014198-001","Fazal Shah");
-    l1.show_list();
+    l1.insertAtStart("23014198-001","Fazal Shah");
+    l1.showList();
 
-    l1.insert_at_last("23014198-004","Talha Raza");
-    l1.show_list();
+    l1.insertAtStart("23014198-004","Talha Raza");
+    l1.showList();
 
-    l1.insert_after(l1.search_student("23014198-002"),"23014198-003","Syed Haroon Bukhari");
-    l1.show_list();
+    l1.insertAfter(l1.searchStudent("23014198-002"),"23014198-003","Syed Haroon Bukhari");
+    l1.showList();
+ 
+    l1.insertAtLast("23014198-005","Ayesha Azhar");
+    l1.showList();
 
-    l1.insert_at_last("23014198-005","Ayesha Azhar");
-    l1.show_list();
+    l1.deleteFirst();
+    l1.showList();
 
-    l1.delete_first();
-    l1.show_list();
+    l1.deleteLast();
+    l1.showList();
 
-    l1.delete_last();
-    l1.show_list();
+    l1.deleteStudent(l1.searchStudent("23014198-002"));
+    l1.showList();
 
-    l1.delete_student(l1.search_student("23014198-002"));
-    l1.show_list();
-
-    l1.clear_list();
-    l1.show_list();
+    l1.clearList();
+    l1.showList();
 
     return 0;
 }
