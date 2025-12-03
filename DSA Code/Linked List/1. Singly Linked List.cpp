@@ -168,20 +168,14 @@ class SLL
         Node *delNode = searchNode(key);
         if(delNode != nullptr)
         {
-            // only one node
-            if(head->next == nullptr)
-            {
-                delete head;
-                head = nullptr;
-            }
-            // first node but having more than one node
-            else if(delNode == head && head->next != nullptr)
+            // first node
+            if(delNode == head)
             {
                 Node *temp = head;
                 head = head->next;
                 delete temp;
             }
-            // middle and last node
+            // any middle or last node
             else
             {
                 Node *temp = head;
