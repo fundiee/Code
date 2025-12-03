@@ -1,216 +1,161 @@
 #include<iostream>
 using namespace std;
 
-class Customer // customer class
-{
+class Customer {
     public:
     string name;
     int id;
-    Customer *next = NULL, *prev = NULL;
-    Customer(string name, int id) // constructor
+    Customer *next = nullptr, *prev = nullptr;
+    Customer(string name, int id)
     {
         this->name = name;
         this->id = id;
     }
 };
 
-class List // List class
-{
+class List {
     Customer *head;
     public:
-    List(string name, int id) // constructor
+    List(string name, int id)
     {
         head = new Customer(name,id);
     }
-    bool is_empty() // function
+
+    bool is_empty()
     {
-        if(head == NULL)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return head == nullptr;
     }
-    void insert_at_start(string name, int id) // function
+
+    void insert_at_start(string name, int id)
     {
-        if(head == NULL)
+        Customer *temp = new Customer(name,id);
+        if(head != nullptr)
         {
-            Customer *temp = new Customer(name,id);
-        }
-        else
-        {
-            Customer *temp = new Customer(name,id);
             temp->next = head;
             head->prev = temp;
-            head = temp;
         }
+        head = temp;
     }
-    void insert_at_last(string name, int id) // function
+
+    void insert_at_last(string name, int id)
     {
-        if(head == NULL)
+        Customer *temp = new Customer(name,id);
+        if(head == nullptr)
         {
-            head = new Customer(name,id);
+            head = temp;
+            return;
         }
-        else
-        {
-            Customer *temp = head;
-            while(temp->next != NULL)
-            {
-                temp = temp->next;
-            }
-            temp->next = new Customer(name,id);
-            temp->next->prev = temp;
-        }
+        Customer *last = head;
+        while(last->next != nullptr)
+            last = last->next;
+        last->next = temp;
+        temp->prev = last;
     }
-    void show_list() // function
+
+    void show_list()
     {
         cout<<"Customer id | Customer Name" <<endl;
         Customer *temp = head;
-        while(temp != NULL)
+        while(temp != nullptr)
         {
             cout<<temp->id <<"         | " <<temp->name <<endl;
-            temp =temp->next;
+            temp = temp->next;
         }
         cout<<"----------------------------" <<endl;
     }
-    Customer* search_Customer(int id) // function
+
+    Customer* search_Customer(int id)
     {
-        if(head == NULL)
+        Customer* temp = head;
+        while(temp != nullptr)
         {
-            return NULL;
+            if(temp->id == id)
+                return temp;
+            temp = temp->next;
         }
-        else
-        {
-            Customer* temp = head;
-            while(temp != NULL)
-            {
-                if(temp->id == id)
-                {
-                    return temp;
-                }
-                temp = temp->next;
-            }
-            return NULL;
-        }
+        return nullptr;
     }
-    void insert_after(Customer *c, string name, int id) // function
+
+    void insert_after(Customer *c, string name, int id)
     {
-        if(c->next == NULL) // if last customer
-        {
-            c->next = new Customer(name,id);
-            c->next->prev = c;
-        }
-        else // if middle customer
-        {
-            Customer *temp = new Customer(name,id);
-            temp->next = c->next;
-            temp->prev = c;
+        if(c == nullptr) return;
+        Customer *temp = new Customer(name,id);
+        temp->next = c->next;
+        temp->prev = c;
+        if(c->next != nullptr)
             c->next->prev = temp;
-            c->next = temp;
-        }
+        c->next = temp;
     }
-    void delete_first() // function
+
+    void delete_first()
     {
-        if(head->next == NULL)
+        if(head == nullptr) return;
+
+        Customer *temp = head;
+        head = head->next;
+        if(head != nullptr)
+            head->prev = nullptr;
+        delete temp;
+    }
+
+    void delete_last()
+    {
+        if(head == nullptr) return;
+
+        Customer *temp = head;
+        if(temp->next == nullptr)
         {
             delete head;
-            head = NULL;
+            head = nullptr;
+            return;
         }
-        else
-        {
-            Customer *temp = head;
-            head = head->next;
-            head->prev = NULL;
-            delete temp;
-        }
+
+        while(temp->next != nullptr)
+            temp = temp->next;
+        temp->prev->next = nullptr;
+        delete temp;
     }
-    void delete_last() // function
+
+    void delete_customer(int id)
     {
-        if(head->next == NULL) // only 1 customer
+        Customer *temp = head;
+        while(temp != nullptr)
         {
-            delete head;
-            head = NULL;
-        }
-        else
-        {
-            Customer *temp = head; // last customer
-            while(temp->next != NULL)
+            if(temp->id == id)
             {
-                temp = temp->next;
-            }
-            temp->prev->next = NULL;
-            delete temp;
-        }
-    }
-    void delete_customer(int id) // function
-    {
-        if(head->next == NULL) // first Customer case:1
-        {
-            if(head->id == id)
-            {
-                delete head;
-                head = NULL;
-                return;
-            }
-        }
-        else if(head->next != NULL) // first customer case:2
-        {
-            if(head->id == id)
-            {
-                Customer *temp = head;
-                head = head->next;
-                head->prev = NULL;
+                if(temp->prev != nullptr)
+                    temp->prev->next = temp->next;
+                else
+                    head = temp->next;
+
+                if(temp->next != nullptr)
+                    temp->next->prev = temp->prev;
+
                 delete temp;
                 return;
             }
+            temp = temp->next;
         }
-
-        Customer *temp = head;
-        while(temp != NULL)
-        {
-            if(temp->next == NULL) // last customer case
-            {
-                if(temp->id == id)
-                {
-                    temp->prev->next = NULL;
-                    delete temp;
-                    break;
-                }
-                temp = temp->next;
-            }
-            else
-            {
-               if(temp->id == id) // middle customer case
-                {
-                    Customer *t = temp;
-                    temp->prev->next = temp->next;
-                    temp->next->prev = temp->prev;
-                    delete t;
-                    break;
-                }
-                 temp = temp->next;
-            }
-        }  
     }
-    void clear_list() // function
+
+    void clear_list()
     {
         Customer *temp = head;
-        while(head != NULL)
+        while(head != nullptr)
         {
             head = head->next;
             delete temp;
             temp = head;
         }
     }
-    ~List() // destructor
+
+    ~List()
     {
         clear_list();
     }
 };
 
-int main() // main function
+int main()
 {
     List l1("Shaheer Sheraz", 102);
     l1.show_list();
