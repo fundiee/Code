@@ -8,8 +8,8 @@ class Heap
     { }
     void insert(int array[], int index)
     {
-        // Child Value > Parent Value && Child Index >= 0
-        while(array[index] > array[(index - 1)/2] && index >= 0)
+        // Child Index > 0 && Child Value > Parent Value
+        while(index > 0 && array[index] > array[(index - 1)/2])
         {
             // swap = Child Value
             int swap = array[index];
