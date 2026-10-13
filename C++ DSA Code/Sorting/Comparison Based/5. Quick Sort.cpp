@@ -1,3 +1,9 @@
+// shuffle the array
+// In QuickSort: if l < h then perform 3 tasks:
+// partitioning: first place the pivot to its place and then get index of left sublist high, that divide the array to two sublists
+// call for left sublist
+// call for right sublist
+
 #include<iostream>
 #include<cstdint>   // for INT32_MAX
 #include<cstdlib>   // for rand, srand
@@ -31,19 +37,20 @@ int partition(int A[],int l, int h)
             A[j] = swap;
         }
     }
-    int swap = A[l]; // pivot value
     A[l] = A[j];
-    A[j] = swap;
-    return j; // pivot index or position
+    A[j] = pivot;
+    return j; // pivot's swapped position index and leftHigh
 }
 
 void quickSort(int A[], int l, int h)
 {
     if(l<h)
     {
-        int pivot = partition(A,l,h); // place pivot to it's position and return it's index
-        quickSort(A,l,pivot); // always sort left list of pivot
-        quickSort(A,pivot+1,h); // always sort right list of pivot
+        
+        int pivotIndex = partition(A,l,h); // place pivot to it's position and return it's updated index
+        // here pivotIndex is helped as leftHigh
+        quickSort(A,l,pivotIndex); // sort left list of pivot
+        quickSort(A,pivotIndex+1,h); // sort right list of pivot
     }
 }
 
@@ -53,9 +60,9 @@ int main()
     int A[size+1] = {11,13,7,12,16,9,24,5,10,3};
 
     srand(time(0));          // seed random number generator
-    shuffleArray(A, size);   // shuffle only the first size elements
+    shuffleArray(A, size);  
+    
     A[size] = INT32_MAX;     // sentinel stays at the end
-
     quickSort(A,0,size);
 
     cout<<"Sorted Array: ";
