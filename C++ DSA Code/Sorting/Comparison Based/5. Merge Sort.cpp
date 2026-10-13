@@ -1,3 +1,10 @@
+// 1. In merge if l < h then perform 4 tasks
+// update mid, call for left sub list, call for right sublist then merge
+// 2. In merge, update i with l, j with mid+1 and k with l and create a aux array of size h+1
+// start merging with a loop where i <= mid and j <= h
+// after loop, create two loops but only one execute to add remaining elements in aux
+// update original array with aux array
+
 #include<iostream>
 using namespace std;
 
