@@ -1,5 +1,20 @@
 #include<iostream>
+#include<cstdint>   // for INT32_MAX
+#include<cstdlib>   // for rand, srand
+#include<ctime>     // for time
 using namespace std;
+
+// Fisher-Yates (Knuth) Shuffle
+void shuffleArray(int A[], int n)
+{
+    for(int i = n - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        int temp = A[i];
+        A[i] = A[j];
+        A[j] = temp;
+    }
+}
 
 int partition(int A[],int l, int h)
 {
@@ -36,9 +51,13 @@ int main()
 {
     const int size = 10;
     int A[size+1] = {11,13,7,12,16,9,24,5,10,3};
-    A[size+1] = INT32_MAX;  // INT32_MAX is a macro having maximum positive value of int data type as infinity and including in sorting but not displayed in output
+
+    srand(time(0));          // seed random number generator
+    shuffleArray(A, size);   // shuffle only the first size elements
+    A[size] = INT32_MAX;     // sentinel stays at the end
 
     quickSort(A,0,size);
+
     cout<<"Sorted Array: ";
     for(int i=0; i<size; i++)
     {
