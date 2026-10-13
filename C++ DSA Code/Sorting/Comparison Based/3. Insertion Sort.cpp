@@ -1,3 +1,10 @@
+// start a loop from 1 to n-1 for rounds
+// store value at round's index in temp
+// start a loop to shift elements: ( index must be >= 0 and value at index must be greater than temp )
+// swap value of index+1 with index
+// dec index till index == 0
+// swap value of temp with index+1
+
 #include<iostream>
 using namespace std;
 
